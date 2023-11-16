@@ -11,7 +11,12 @@ import CoreLocation
 protocol WeatherFetching {
     func fetchWeatherOverview(latitude: CLLocationDegrees, longitude: CLLocationDegrees, completion: @escaping (WeatherOverviewProperty?, Error?) -> Void)
     
-    func fetchWeatherForecast(gridId: String, gridX: Int, gridY: Int, completion: @escaping (WeatherForecastProperty?, Error?) -> Void)
+    func fetchWeatherForecast(gridId: String, gridX: Int, gridY: Int, forecastType: WeatherForecastType, completion: @escaping (WeatherForecastProperty?, Error?) -> Void)
+}
+
+enum WeatherForecastType {
+    case halfDay
+    case hourly
 }
 
 class WeatherService: WeatherFetching {
@@ -38,8 +43,9 @@ class WeatherService: WeatherFetching {
         }
     }
     
-    func fetchWeatherForecast(gridId: String, gridX: Int, gridY: Int, completion: @escaping (WeatherForecastProperty?, Error?) -> Void) {
-        guard let url = URL(string: "\(baseUrl)/gridpoints/\(gridId)/\(gridX),\(gridY)/forecast") else {
+    func fetchWeatherForecast(gridId: String, gridX: Int, gridY: Int, forecastType: WeatherForecastType, completion: @escaping (WeatherForecastProperty?, Error?) -> Void) {
+        let urlString = "\(baseUrl)/gridpoints/\(gridId)/\(gridX),\(gridY)/forecast/\(forecastType == .hourly ? "hourly" :"")"
+        guard let url = URL(string: urlString) else {
             fatalError("Invalid URL")
         }
         

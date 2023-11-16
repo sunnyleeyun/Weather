@@ -17,7 +17,7 @@ class ViewController: UIViewController {
                 return
             }
             print("weatherOverviewProperty", weatherOverviewProperty)
-            WeatherService(networkManager: NetworkManager()).fetchWeatherForecast(gridId: weatherOverviewProperty!.gridId, gridX: weatherOverviewProperty!.gridX, gridY: weatherOverviewProperty!.gridY) { weatherForecastProperty, error in
+            WeatherService(networkManager: NetworkManager()).fetchWeatherForecast(gridId: weatherOverviewProperty!.gridId, gridX: weatherOverviewProperty!.gridX, gridY: weatherOverviewProperty!.gridY, forecastType: .hourly) { weatherForecastProperty, error in
                 if let error = error {
                     debugPrint("error", error)
                     return
